@@ -15,7 +15,7 @@ class Bloque extends Model
         'nombre',
     ];
 
-    public function fila()
+    public function filas()
     {
         return $this->hasMany(Fila::class);
     }

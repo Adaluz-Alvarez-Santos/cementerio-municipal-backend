@@ -19,6 +19,7 @@ class Inhumacion extends Model
         'fecha_extendido_hasta',
         'estado',
         'persona_id',
+        'espacio_id'
     ];
 
     public function persona()
@@ -31,7 +32,11 @@ class Inhumacion extends Model
         return $this->hasOne(Exhumacion::class);
     }
     public function perpetuidad()
-{
-    return $this->hasOne(Perpetuidad::class);
-}
+    {
+        return $this->hasOne(Perpetuidad::class);
+    }
+    public function espacio()
+    {
+        return $this->belongsTo(Espacio::class);
+    }
 }

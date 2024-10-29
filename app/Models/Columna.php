@@ -14,7 +14,7 @@ class Columna extends Model
         'fila_id',
     ];
 
-    public function espacio()
+    public function espacios()
     {
         return $this->hasMany(Espacio::class);
     }

@@ -19,12 +19,12 @@ class Fila extends Model
         return $this->belongsTo(Bloque::class);
     }
 
-    public function columna()
+    public function columnas()
     {
         return $this->hasMany(Columna::class);
     }
 
-    public function espacio()
+    public function espacios()
     {
         return $this->hasMany(Espacio::class);
     }

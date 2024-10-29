@@ -14,14 +14,16 @@ class CreateInhumacionesTable extends Migration
     public function up()
     {
         Schema::create('inhumaciones', function (Blueprint $table) {
-            $table->id(); // Crea una columna `id` como clave primaria
+            $table->id(); 
             $table->date('fecha_entrada');
             $table->date('fecha_comprobante');
             $table->string('nro_comprobante');
             $table->date('fecha_finalizado')->nullable();
-            $table->date('fecha_extendido_hasta')->nullable();  // Fecha de extensión
+            $table->date('fecha_extendido_hasta')->nullable(); 
             $table->enum('estado', ['inhumacion', 'extendido', 'exhumacion', 'perpetuidad'])->default('inhumacion');  // Estado actual de la inhumación
-            $table->unsignedBigInteger('persona_id'); // Clave foránea
+            $table->unsignedBigInteger('espacio_id')->nullable();
+    $table->foreign('espacio_id')->references('id')->on('espacios')->onDelete('set null');
+            $table->unsignedBigInteger('persona_id'); 
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->timestamps();
         });
@@ -35,5 +37,6 @@ class CreateInhumacionesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('inhumaciones');
+
     }
 }

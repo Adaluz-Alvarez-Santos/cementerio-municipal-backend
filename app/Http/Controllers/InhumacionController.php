@@ -6,16 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Familiar;
 use App\Models\Persona;
 use App\Models\Inhumacion;
+use App\Models\Espacio;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class InhumacionController extends Controller
 {
-    
+
     public function index()
     {
-        
-        $inhumaciones = Inhumacion::with('persona')->paginate(10); 
+
+        $inhumaciones = Inhumacion::with('persona')->paginate(10);
         return response()->json($inhumaciones);
     }
 
@@ -40,13 +41,14 @@ class InhumacionController extends Controller
             'familiares.*.apellido_materno' => 'required|string|max:255',
             'familiares.*.parentesco' => 'required|string|max:255',
             'familiares.*.celular' => 'required|string|max:255',
+            'espacio_id' => 'required|exists:espacios,id',
         ]);
 
         DB::beginTransaction();
 
         try {
 
-           
+
             $persona = Persona::create([
                 'CI' => $validatedData['persona']['CI'],
                 'nombre' => $validatedData['persona']['nombre'],
@@ -58,7 +60,7 @@ class InhumacionController extends Controller
             ]);
 
 
-         
+
             foreach ($validatedData['familiares'] as $familiarData) {
                 Familiar::create([
                     'CI' => $familiarData['CI'],
@@ -77,16 +79,21 @@ class InhumacionController extends Controller
                 ? Carbon::parse($validatedData['persona']['fecha_fallecimiento'])->addYears(5)
                 : Carbon::parse($validatedData['fecha_entrada'])->addYears(5);
 
-            
+
             $inhumacion = Inhumacion::create([
                 'fecha_entrada' => $validatedData['fecha_entrada'],
                 'fecha_comprobante' => $validatedData['fecha_comprobante'],
                 'nro_comprobante' => $validatedData['nro_comprobante'],
-                'fecha_finalizado' => $fechaFinalizado,  
-                'estado' => 'inhumacion',  
+                'fecha_finalizado' => $fechaFinalizado,
+                'estado' => 'inhumacion',
                 'persona_id' => $persona->id,
-
+                'espacio_id' => $validatedData['espacio_id'], // Asignación del espacio
             ]);
+            
+            // Actualizar el espacio a ocupado
+            $espacio = Espacio::findOrFail($validatedData['espacio_id']);
+            $espacio->update(['estado' => 'ocupado']);
+
 
             DB::commit();
 
