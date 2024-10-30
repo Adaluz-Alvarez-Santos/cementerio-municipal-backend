@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\InhumacionController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\FamiliarController;
@@ -52,3 +51,7 @@ Route::prefix('perpetuidades')->group(function () {
 Route::post('/bloques', [EspacioController::class, 'crearBloqueConFilasYColumnas']);
 Route::patch('/espacios/{filaId}/{columnaId}/estado', [EspacioController::class, 'cambiarEstadoEspacio']);
 Route::get('/bloques', [EspacioController::class, 'obtenerBloquesConDetalles']);
+
+
+Route::get('/espacios/{espacioId}/historial', [EspacioController::class, 'obtenerHistorial']);
+//Route::post('/inhumaciones/{espacio_id}', [InhumacionController::class, 'obtenerHistorialPorEspacio']);

@@ -37,6 +37,6 @@ class Inhumacion extends Model
     }
     public function espacio()
     {
-        return $this->belongsTo(Espacio::class);
+        return $this->belongsTo(Espacio::class, 'espacio_id');
     }
 }

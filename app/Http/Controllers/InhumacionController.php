@@ -89,7 +89,7 @@ class InhumacionController extends Controller
                 'persona_id' => $persona->id,
                 'espacio_id' => $validatedData['espacio_id'], // Asignación del espacio
             ]);
-            
+
             // Actualizar el espacio a ocupado
             $espacio = Espacio::findOrFail($validatedData['espacio_id']);
             $espacio->update(['estado' => 'ocupado']);
@@ -118,5 +118,23 @@ class InhumacionController extends Controller
             'message' => 'Persona no encontrada',
             'status' => 404
         ], 404);
+    }
+
+    public function obtenerHistorialPorEspacio($espacio_id)
+    {
+        // Obtener el historial de inhumaciones y exhumaciones para el espacio dado
+        $historial = Inhumacion::with(['persona', 'exhumacion']) // Relaciona la persona y exhumación
+            ->where('espacio_id', $espacio_id) // Filtra por el ID del espacio
+            ->get();
+
+        // Verifica si se encontraron inhumaciones
+        if ($historial->isEmpty()) {
+            return response()->json([
+                'message' => 'No se encontraron registros para este espacio.',
+            ], 404);
+        }
+
+        // Retorna el historial en formato JSON
+        return response()->json($historial, 200);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Bloque;
 use App\Models\Fila;
 use App\Models\Columna;
+use App\Models\Inhumacion;
 use App\Models\Espacio;
 
 class EspacioController extends Controller
@@ -61,5 +62,20 @@ class EspacioController extends Controller
                 'message' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    // En tu controlador EspacioController.php o HistorialController.php
+    public function obtenerHistorial($espacio_id)
+    { 
+        // Obtener el historial de inhumaciones para el espacio dado
+        $inhumaciones = Inhumacion::with('persona')
+            ->where('espacio_id', $espacio_id)
+            ->get();
+    
+        // Retorna el historial de inhumaciones en formato JSON
+        return response()->json([
+            'espacio' => $espacio_id,
+            'inhumaciones' => $inhumaciones,
+        ], 200);
     }
 }
