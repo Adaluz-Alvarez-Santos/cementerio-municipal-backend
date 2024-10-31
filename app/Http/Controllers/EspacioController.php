@@ -13,7 +13,7 @@ class EspacioController extends Controller
 {
     public function obtenerBloquesConDetalles()
     {
-        $bloques = Bloque::with('filas.columnas.espacios')->get();
+        $bloques = Bloque::with('filas.columnas.espacios.inhumaciones')->get();
 
         return response()->json(['bloques' => $bloques], 200);
     }

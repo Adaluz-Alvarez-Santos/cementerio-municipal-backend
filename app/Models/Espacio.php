@@ -14,12 +14,12 @@ class Espacio extends Model
 
     public function fila()
     {
-        return $this->belongsToMany(Fila::class, 'columna_id', 'fila_id');
+        return $this->belongsTo(Fila::class);
     }
 
     public function columna()
     {
-        return $this->belongsToMany(Columna::class, 'fila_id', 'columna_id');
+        return $this->belongsTo(Columna::class);
     }
 
     public function inhumaciones()

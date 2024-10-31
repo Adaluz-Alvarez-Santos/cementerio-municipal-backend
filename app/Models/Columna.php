@@ -21,7 +21,7 @@ class Columna extends Model
 
     public function fila()
     {
-        return $this->belongsToMany(Fila::class);
+        return $this->belongsTo(Fila::class);
     }
 
 }
